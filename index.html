@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20for7 — All Projects</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Inter',sans-serif}
+  body{background:#0a0a0f;color:#fff;min-height:100vh}
+  .glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.08)}
+  .card{transition:all .2s ease}
+  .card:hover{transform:translateY(-4px);background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.15)}
+  .card:hover .play-btn{opacity:1;transform:translateY(0)}
+  .play-btn{opacity:0;transform:translateY(8px);transition:all .2s ease}
+</style>
+</head>
+<body>
+<div class="max-w-[1280px] mx-auto px-5 md:px-8 py-10 md:py-16">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+    <div>
+      <div class="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full glass mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        13 Projects • 20for7
+      </div>
+      <h1 class="text-[40px] md:text-[56px] font-extrabold leading-[0.9] tracking-tight">20for7</h1>
+      <p class="text-white/50 text-[15px] mt-3 max-w-[520px]">Independent archive. Each project is its own player — click any cover to listen. Built for direct distribution.</p>
+    </div>
+    <div class="flex gap-2">
+      <input id="search" placeholder="Filter projects..." class="glass rounded-full px-5 py-2.5 text-sm outline-none focus:border-white/20 w-full md:w-[260px] placeholder:text-white/30">
+      <a href="https://github.com/aJosephOwens" target="_blank" class="hidden md:flex glass rounded-full px-5 py-2.5 text-sm font-medium hover:bg-white/10">GitHub ↗</a>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div id="grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5"></div>
+
+  <!-- Footer -->
+  <div class="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/30">
+    <div>© 2026 20for7 — All tracks stream direct from GitHub Pages. No middleman.</div>
+    <div class="flex gap-4">
+      <span id="totalTracks">0 tracks total</span>
+      <span>•</span>
+      <span>Built for sharing</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const albums = [
+  { name: "Ashes To Amen", slug: "Ashes-To-Amen" },
+  { name: "Backseat Verses", slug: "Backseat-Verses" },
+  { name: "Chrome Tears", slug: "Chrome-Tears" },
+  { name: "Clout Chase", slug: "Clout-Chase" },
+  { name: "Cornerstore Confessions", slug: "Cornerstore-Confessions" },
+  { name: "Dead Air", slug: "Dead-Air" },
+  { name: "Hollow Crown", slug: "Hollow-Crown" },
+  { name: "Nocturnal Drafts", slug: "Nocturnal-Drafts" },
+  { name: "No Love On Sunday", slug: "No-Love-On-Sunday" },
+  { name: "Rooftop Echoes", slug: "Rooftop-Echoes" },
+  { name: "Studio Raindrops", slug: "Studio-Raindrops" },
+  { name: "Surviving Me", slug: "Surviving-Me" },
+  { name: "World Trap", slug: "World-Trap" },
+];
+
+const gradients = [
+  "from-violet-600 via-indigo-600 to-fuchsia-600",
+  "from-amber-500 via-orange-600 to-red-600",
+  "from-emerald-500 via-teal-600 to-cyan-600",
+  "from-zinc-700 via-zinc-800 to-black",
+  "from-blue-600 via-violet-600 to-indigo-700",
+  "from-rose-500 via-red-600 to-orange-600",
+  "from-slate-700 via-slate-800 to-zinc-900",
+  "from-yellow-500 via-amber-600 to-orange-600",
+  "from-cyan-500 via-blue-600 to-violet-600",
+  "from-stone-600 via-stone-700 to-zinc-800",
+  "from-indigo-500 via-purple-600 to-pink-600",
+  "from-green-600 via-emerald-700 to-teal-800",
+  "from-red-800 via-zinc-800 to-black",
+];
+
+const grid = document.getElementById('grid');
+const search = document.getElementById('search');
+
+function render(filter=""){
+  grid.innerHTML = "";
+  const filtered = albums.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()));
+  filtered.forEach((album,i)=>{
+    const grad = gradients[i % gradients.length];
+    const card = document.createElement('a');
+    card.href = `https://ajosephowens.github.io/${album.slug}/`;
+    card.target = "_blank";
+    card.className = "card glass rounded-[20px] p-3 md:p-4 group";
+    card.innerHTML = `
+      <div class="relative aspect-square rounded-[14px] overflow-hidden bg-[#14141c] mb-3.5">
+        <img src="./covers/${album.slug}.jpg" alt="${album.name}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="absolute inset-0 hidden items-center justify-center bg-gradient-to-br ${grad} p-4">
+          <div class="text-center">
+            <div class="text-3xl font-bold opacity-80 mb-1">${album.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+            <div class="text-[10px] tracking-widest uppercase opacity-60">20for7</div>
+          </div>
+        </div>
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></div>
+        <div class="play-btn absolute bottom-2.5 right-2.5 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center text-[14px] font-bold shadow-lg">▶</div>
+        <div class="absolute top-2.5 left-2.5 text-[10px] tracking-widest uppercase px-2 py-1 rounded-full bg-black/60 backdrop-blur text-white/80">${album.slug.includes('Vol') ? 'VOLUME' : 'ALBUM'}</div>
+      </div>
+      <div class="px-1">
+        <div class="text-[14px] font-semibold leading-tight truncate">${album.name}</div>
+        <div class="text-[12px] text-white/40 mt-1 flex items-center gap-1.5">
+          <span>20for7</span>
+          <span class="w-1 h-1 rounded-full bg-white/20"></span>
+          <span class="hover:text-white/60 transition">Open player ↗</span>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  document.getElementById('totalTracks').textContent = `${filtered.length} projects • ${albums.length} total`;
+}
+
+search.addEventListener('input', e=> render(e.target.value));
+render();
+</script>
+</body>
+</html>
